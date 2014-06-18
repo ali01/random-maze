@@ -2,7 +2,7 @@
 
 #include <algorithm>
 #include <array>
-#include <cassert>
+#include <exception>
 #include <chrono>
 #include <iostream>
 #include <random>
@@ -13,6 +13,7 @@
 using std::array;
 using std::chrono::system_clock;
 using std::default_random_engine;
+using std::invalid_argument;
 using std::ostream;
 using std::set;
 using std::shuffle;
@@ -29,8 +30,14 @@ RandomMaze::RandomMaze(unsigned int rows, unsigned int cols)
   unsigned seed = system_clock::now().time_since_epoch().count();
   prg_ = default_random_engine(seed);
 
-  // contiguous region of memory to efficiently contain
-  // all cells of two-dimensional array
+  // ensure rows and cols are both greater than 0
+  if (rows == 0 || cols == 0) {
+    string msg = "the number of rows and columns must be greater than zero.";
+    throw invalid_argument(msg);
+  }
+
+  // allocate a contiguous region of memory to efficiently
+  // contain all cells of a two-dimensional array
   cell_t *cells = new cell_t[rows * cols];
 
   matrix_ = new cell_t*[rows];
