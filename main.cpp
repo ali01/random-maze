@@ -40,11 +40,6 @@ main(int argc, char **argv) {
   const int rows = stoi(argv[optind]);
   const int cols = stoi(argv[++optind]);
 
-  if (rows < 1 || cols < 1) {
-    printf("Error: the number of rows and columns must be greater than 0.\n");
-    return -1;
-  }
-
   try {
     // heavy lifting done by RandomMaze
     RandomMaze maze(rows, cols);
